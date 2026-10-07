@@ -19,82 +19,48 @@ import java.util.Scanner;
     "PMD.LocalVariableCouldBeFinal"
 })
 public class Armour extends Equippable {
-    /**
-     * The amount of damage that can be negated.
-     */
     protected int defense;
 
-    /**
-     * Default to a armour with an empty name, zero durability, zero defense,
-     * blank material, no modifier a zero modifier level, and a blank element.
-     */
     public Armour()
     {
         super();
-
         this.defense = 0;
     }
 
-    /**
-     * Duplicate a piece of armour.
-     *
-     * @param src armour to duplicate
-     */
     public Armour(Armour src)
     {
-        // Complete this function.
+        super(src.getName());
+
+        this.stackable = src.isStackable();
+        this.durability = src.getDurability();
+        this.material = src.getMaterial();
+        this.modifier = src.getModifier();
+        this.modifierLevel = src.getModifierLevel();
+        this.element = src.getElement();
+        this.defense = src.getDefense();
     }
 
-    /**
-     * Retrieve armour defense.
-     *
-     * @return total defense provided
-     */
-    public int getDefense()
-    {
-        return this.defense;
-    }
+    public int getDefense() { return this.defense; }
+    public void setDefense(int def) { this.defense = def; }
 
-    /**
-     * Update defense.
-     *
-     * @param def replacement defense
-     */
-    public void setDefense(int def)
-    {
-        this.defense = def;
-    }
-
-    /**
-     * Read Armour attributes.
-     */
     @Override
     public void read(Scanner snr)
     {
-        super.name    = snr.next();
-
-        // Complete this function.
+        super.name = snr.next();
+        super.material = snr.next();
+        super.durability = snr.nextInt();
+        this.defense = snr.nextInt();
+        super.modifier = snr.next();
+        super.modifierLevel = snr.nextInt();
+        super.element = snr.next();
     }
 
-    /**
-     * Clone--i.e., copy--this Armour.
-     */
     @Override
     public Item clone()
     {
-        Armour cpy = new Armour();
-
-        // Complete this function.
-
-        return cpy;
+        return new Armour(this);
     }
 
-    /**
-     * Check for logical equivalence--based on name, material, modifier, and
-     * element.
-     *
-     * @param rhs object for which a comparison is desired
-     */
     @Override
     public boolean equals(Object rhs)
     {
@@ -104,39 +70,37 @@ public class Armour extends Equippable {
 
         Armour rhsItem = (Armour) rhs;
 
-        // Complete this function.
-        // Remove the placeholder return
-        return false;
+        return this.name.equals(rhsItem.name)
+            && this.material.equals(rhsItem.material)
+            && this.modifier.equals(rhsItem.modifier)
+            && this.element.equals(rhsItem.element);
     }
 
-    /**
-     * Generate a hash code by adding the name, material, modifier, and element
-     * hash codes.
-     */
     @Override
     public int hashCode()
     {
-        // Complete this function.
-        // Remove the placeholder return
-        return -1;
+        return this.name.hashCode()
+            + this.material.hashCode()
+            + this.modifier.hashCode()
+            + this.element.hashCode();
     }
 
-    /**
-     * *Print* one Armour.
-     */
     @Override
     public String toString()
     {
-
-        // Complete this function... treat the return as a hint.
         return String.join(
             System.lineSeparator(),
             String.format("  Nme: %s", super.getName()),
+            String.format("  Dur: %d", super.getDurability()),
+            String.format("  Def: %d", this.getDefense()),
+            String.format("  Mtl: %s", super.getMaterial()),
+            String.format(
+                "  Mdr: %s (Lvl %d)",
+                super.getModifier(),
+                super.getModifierLevel()
+            ),
+            String.format("  Emt: %s", super.getElement()),
             ""
         );
     }
 }
-
-
-
-
